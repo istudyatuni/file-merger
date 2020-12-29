@@ -1,0 +1,9 @@
+extension: md
+folder: input
+
+# необходимо указать сразу в нужном порядке
+files:
+  - test1
+  - test2
+
+output: output
