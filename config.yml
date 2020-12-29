@@ -1,9 +1,9 @@
 extension: md
-folder: input
+folder: files
 
-# необходимо указать сразу в нужном порядке
+# order is important
 files:
-  - test1
-  - test2
+  - "1"
+  - "2"
 
-output: output
+output: readme

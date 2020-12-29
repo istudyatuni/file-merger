@@ -25,6 +25,7 @@ def ask_overwrite(file_name):
 			# clear file content
 			open(file_name, 'w').close()
 			return True
+	return True
 
 def merge_files(result_name, files):
 	result_file = open(result_name, 'a')
@@ -32,7 +33,7 @@ def merge_files(result_name, files):
 		file_name = get_file_name(current_path, input_folder, file, config['extension'])
 		try:
 			with open(file_name, 'r') as f:
-				result_file.write(f.read())
+				result_file.write(f.read() + '\n')
 		except Exception as e:
 			print(e)
 
