@@ -16,15 +16,20 @@ def load_config(config_path):
 	except Exception as e:
 		quit(str(e) + '\nPlease create config.yml')
 
-def ask_overwrite(file_name):
+def ask_overwrite(file_name, ask_for_overwrite = True):
 	if os.path.exists(file_name):
-		answer = input('File "%s" already exist. Overwrite? [y, n] ' % file_name)
-		if answer == 'n':
-			return False
-		elif answer == 'y':
+		answer = 'y'
+		if ask_for_overwrite:
+			answer = input('File "%s" already exist. Overwrite? [y, n] ' % file_name)
+
+		if answer == 'y':
 			# clear file content
 			open(file_name, 'w').close()
 			return True
+
+		return False
+
+	# not exist, then create
 	return True
 
 def merge_files(result_name, files):
@@ -66,7 +71,7 @@ if __name__ == '__main__':
 
 	result_name = get_file_name(current_path, input_folder, config['output'], config['extension'])
 
-	if not ask_overwrite(result_name):
+	if not ask_overwrite(result_name, config['ask_overwrite']):
 		quit('Exiting')
 
 	merge_files(result_name, config['files'])

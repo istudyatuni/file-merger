@@ -1,12 +1,19 @@
-# use this config file or not
+# use this config file or not (optional)
 use: false
 
+# file's extension
 extension: md
+
+# sub-folder with files (optional)
 folder: files
 
-# order is important
+# chapters sequence, order is important
 files:
   - "1"
   - "2"
 
+# resulting file name
 output: readme
+
+# ask to overwrite resulting file or not
+ask_overwrite: true

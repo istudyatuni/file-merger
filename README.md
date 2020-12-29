@@ -14,6 +14,8 @@ Configuration file:
 
 `use` - if `false`, this config file will not be used (optional parameter)
 
+`ask_overwrite` - ask for overwrite or not
+
 Run:
 
 ```bash
