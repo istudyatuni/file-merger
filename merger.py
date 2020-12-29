@@ -49,6 +49,8 @@ if __name__ == '__main__':
 	    config_path = script_path + '/config.yml'
 
 	config = load_config(config_path)
+	if config['files'] == None:
+		quit('No input files specified')
 
 	if 'folder' in config:
 		input_folder = config['folder']
