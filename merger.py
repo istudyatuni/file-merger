@@ -36,6 +36,7 @@ def merge_files(result_name, files):
 				result_file.write(f.read() + '\n')
 		except Exception as e:
 			print(e)
+	print('Successfully written')
 
 if __name__ == '__main__':
 	script_path = sys.path[0]
@@ -52,6 +53,11 @@ if __name__ == '__main__':
 	config = load_config(config_path)
 	if config['files'] == None:
 		quit('No input files specified')
+
+	if not 'use' in config: # or config['use'] == True
+		pass
+	elif config['use'] == False:
+		quit('Incorrect config path\nIf this behaviour is unexpected, check key "use" in config file')
 
 	if 'folder' in config:
 		input_folder = config['folder']

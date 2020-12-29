@@ -1,3 +1,6 @@
+# use this config file or not
+use: false
+
 extension: md
 folder: files
 

@@ -12,6 +12,8 @@ Configuration file:
 
 `output` - resulting file name without extension
 
+`use` - if `false`, this config file will not be used (optional parameter)
+
 Run:
 
 ```bash
