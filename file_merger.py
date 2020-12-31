@@ -29,19 +29,41 @@ def ask_overwrite(file_name, ask_for_overwrite = True):
 
 		return False
 
-	# not exist, then create
+	# not exist, create
 	return True
 
-def merge_files(result_name, files):
+def merge_files(current_path, result_name, files, files_folder, config):
 	result_file = open(result_name, 'a')
 	for file in files:
-		file_name = get_file_name(current_path, input_folder, file, config['extension'])
+		file_name = get_file_name(current_path, files_folder, file, config['extension'])
 		try:
 			with open(file_name, 'r') as f:
 				result_file.write(f.read() + '\n')
 		except Exception as e:
 			print(e)
 	print('Successfully written')
+
+def merge(config):
+	if config['files'] == None:
+		quit('No input files specified')
+
+	if not 'use' in config: # or config['use'] == True
+		pass
+	elif config['use'] == False:
+		quit('Incorrect config path\nIf this behaviour is unexpected, check key "use" in config file')
+
+	if 'folder' in config:
+		input_folder = config['folder']
+	else:
+		input_folder = ''
+
+	current_path = os.getcwd()
+	result_name = get_file_name(current_path, input_folder, config['output'], config['extension'])
+
+	if not ask_overwrite(result_name, config['ask_overwrite']):
+		quit('Exiting')
+
+	merge_files(current_path, result_name, config['files'], input_folder, config)
 
 if __name__ == '__main__':
 	script_path = sys.path[0]
@@ -56,22 +78,5 @@ if __name__ == '__main__':
 	    config_path = script_path + '/config.yml'
 
 	config = load_config(config_path)
-	if config['files'] == None:
-		quit('No input files specified')
 
-	if not 'use' in config: # or config['use'] == True
-		pass
-	elif config['use'] == False:
-		quit('Incorrect config path\nIf this behaviour is unexpected, check key "use" in config file')
-
-	if 'folder' in config:
-		input_folder = config['folder']
-	else:
-		input_folder = ''
-
-	result_name = get_file_name(current_path, input_folder, config['output'], config['extension'])
-
-	if not ask_overwrite(result_name, config['ask_overwrite']):
-		quit('Exiting')
-
-	merge_files(result_name, config['files'])
+	merge(config)
