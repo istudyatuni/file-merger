@@ -10,7 +10,7 @@ def get_file_name(path, folder, file, extension):
 
 def load_config(config_path):
 	try:
-		with open(config_path, 'r') as stream:
+		with open(config_path, encoding='utf-8', mode='r') as stream:
 			config = yaml.safe_load(stream)
 		return config
 	except Exception as e:
