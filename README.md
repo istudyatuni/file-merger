@@ -4,7 +4,7 @@ Merge separate file to one.
 
 Configuration file:
 
-`extension` - input and output files extension
+`extension` - extension for all input and output files (optional parameter)
 
 `folder` - sub-folder, where files located (optional parameter)
 
@@ -16,20 +16,22 @@ Configuration file:
 
 `ask_overwrite` - ask for overwrite or not
 
+`add_file_names` - add file name before its text, or not (optional parameter)
+
 Run:
 
 ```bash
-python merger.py
+python file_merger.py
 ```
 
 The default config file location is the location of the script. You can specify a different file location:
 
 ```bash
-python merger.py config.yml
+python file_merger.py config.yml
 ```
 
 For example, if you want to start from a different directory with your own config file, run:
 
 ```bash
-python path/to/merger.py path/to/custom_config.yml
+python path/to/file_merger.py path/to/custom_config.yml
 ```

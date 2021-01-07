@@ -2,11 +2,13 @@ import sys
 import os
 import yaml
 
-def get_file_name(path, folder, file, extension):
-	# when folder == '' result path looks like 'path//file.extension'
+def get_file_name(path, folder, file, ext):
+	# when folder == '' result path looks like 'path//file.ext'
 	if folder != '':
 		folder += '/'
-	return path + '/' + folder + file + '.' + extension
+	if ext != '':
+		ext = '.' + ext
+	return path + '/' + folder + file + ext
 
 def load_config(config_path):
 	try:
@@ -14,7 +16,15 @@ def load_config(config_path):
 			config = yaml.safe_load(stream)
 		return config
 	except Exception as e:
-		quit(str(e) + '\nPlease create config.yml')
+		e_type = e.__class__
+		if e_type == UnicodeDecodeError:
+			msg = 'Please use UTF-8 encoding for config'
+		elif e_type == FileNotFoundError:
+			msg = 'Please create config.yml'
+		else:
+			msg = 'Unknown error. You can try check UTF-8 encoding'
+
+		quit(str(e) + '\n' + msg)
 
 def ask_overwrite(file_name, ask_for_overwrite = True):
 	if os.path.exists(file_name):
@@ -26,44 +36,55 @@ def ask_overwrite(file_name, ask_for_overwrite = True):
 			# clear file content
 			open(file_name, 'w').close()
 			return True
-
-		return False
+		else:
+			return False
 
 	# not exist, create
 	return True
 
-def merge_files(current_path, result_name, files, files_folder, config):
+def check_config_key(config, key):
+	if key in config:
+		return config[key]
+	else:
+		return ''
+
+def merge_files(current_path, result_name, files_folder, files, ext, add_names):
 	result_file = open(result_name, 'a')
+	name = ''
 	for file in files:
-		file_name = get_file_name(current_path, files_folder, file, config['extension'])
+		if add_names:
+			name = 'File: ' + file + '\n\n'
+
+		file_name = get_file_name(current_path, files_folder, file, ext)
 		try:
 			with open(file_name, 'r') as f:
-				result_file.write(f.read() + '\n')
+				result_file.write(name + f.read() + '\n')
 		except Exception as e:
 			print(e)
 	print('Successfully written')
 
 def merge(config):
-	if config['files'] == None:
+	if check_config_key(config, 'files') == '':
 		quit('No input files specified')
 
-	if not 'use' in config: # or config['use'] == True
-		pass
-	elif config['use'] == False:
+	if check_config_key(config, 'use') == False:
 		quit('Incorrect config path\nIf this behaviour is unexpected, check key "use" in config file')
 
-	if 'folder' in config:
-		input_folder = config['folder']
-	else:
-		input_folder = ''
+	input_folder = check_config_key(config, 'folder')
+	ext          = check_config_key(config, 'extension')
+
+	# add file names to output file or not
+	add_names    = check_config_key(config, 'add_file_names')
+	if add_names == '':
+		add_names = False
 
 	current_path = os.getcwd()
-	result_name = get_file_name(current_path, input_folder, config['output'], config['extension'])
+	result_name = get_file_name(current_path, input_folder, config['output'], ext)
 
 	if not ask_overwrite(result_name, config['ask_overwrite']):
 		quit('Exiting')
 
-	merge_files(current_path, result_name, config['files'], input_folder, config)
+	merge_files(current_path, result_name, input_folder, config['files'], ext, add_names)
 
 if __name__ == '__main__':
 	script_path = sys.path[0]
