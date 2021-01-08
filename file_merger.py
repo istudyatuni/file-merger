@@ -42,20 +42,20 @@ def ask_overwrite(file_name, ask_for_overwrite = True):
 	# not exist, create
 	return True
 
-def check_config_key(config, key):
+def config_key(config, key):
 	if key in config:
 		return config[key]
 	else:
 		return ''
 
-def merge_files(current_path, result_name, files_folder, files, ext, add_names):
+def merge_files(path, result_name, folder, files, ext, file_name_string, add_names):
 	result_file = open(result_name, 'a')
 	name = ''
 	for file in files:
 		if add_names:
-			name = 'File: ' + file + '\n\n'
+			name = file_name_string + file + '\n\n'
 
-		file_name = get_file_name(current_path, files_folder, file, ext)
+		file_name = get_file_name(path, folder, file, ext)
 		try:
 			with open(file_name, 'r') as f:
 				result_file.write(name + f.read() + '\n')
@@ -64,19 +64,24 @@ def merge_files(current_path, result_name, files_folder, files, ext, add_names):
 	print('Successfully written')
 
 def merge(config):
-	if check_config_key(config, 'files') == '':
+	if config_key(config, 'files') == '':
 		quit('No input files specified')
 
-	if check_config_key(config, 'use') == False:
+	if config_key(config, 'use') == False:
 		quit('Incorrect config path\nIf this behaviour is unexpected, check key "use" in config file')
 
-	input_folder = check_config_key(config, 'folder')
-	ext          = check_config_key(config, 'extension')
+	input_folder = config_key(config, 'folder')
+	ext          = config_key(config, 'extension')
 
 	# add file names to output file or not
-	add_names    = check_config_key(config, 'add_file_names')
+	add_names    = config_key(config, 'add_file_names')
 	if add_names == '':
 		add_names = False
+
+	# what write before file name
+	file_name_string = config_key(config, 'file_name_string')
+	if file_name_string == '':
+		file_name_string = 'File: '
 
 	current_path = os.getcwd()
 	result_name = get_file_name(current_path, input_folder, config['output'], ext)
@@ -84,7 +89,7 @@ def merge(config):
 	if not ask_overwrite(result_name, config['ask_overwrite']):
 		quit('Exiting')
 
-	merge_files(current_path, result_name, input_folder, config['files'], ext, add_names)
+	merge_files(current_path, result_name, input_folder, config['files'], ext, file_name_string, add_names)
 
 if __name__ == '__main__':
 	script_path = sys.path[0]

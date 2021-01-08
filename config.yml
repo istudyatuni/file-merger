@@ -20,3 +20,6 @@ ask_overwrite: true
 
 # write file names before text or not (optional)
 add_file_names: false
+
+# string before file name (optional)
+file_name_string: "File: "

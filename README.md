@@ -18,6 +18,8 @@ Configuration file:
 
 `add_file_names` - add file name before its text, or not (optional parameter)
 
+`file_name_string` - what write before file name, default is 'File: ' (optional parameter)
+
 Run:
 
 ```bash
