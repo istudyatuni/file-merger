@@ -6,11 +6,13 @@ Configuration file:
 
 `extension` - extension for all input and output files (optional parameter)
 
+If you specify `extension`, you must write all files without extensions
+
 `folder` - sub-folder, where files located (optional parameter)
 
 `files` - array with input file names without extension. Their content are merged in the order as in this list
 
-`output` - resulting file name without extension
+`output` - resulting file name
 
 `use` - if `false`, this config file will not be used (optional parameter)
 

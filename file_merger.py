@@ -52,11 +52,11 @@ def ask_overwrite(file_name, ask_for_overwrite = True):
 	# not exist, create
 	return True
 
-def config_key(config, key):
+def config_key(config, key, default = ''):
 	if key in config:
 		return config[key]
 	else:
-		return ''
+		return default
 
 def merge_files(path, result_name, folder, files, ext, file_label = '', add_names = False):
 	result_file = open(result_name, 'a')
@@ -75,24 +75,20 @@ def merge_files(path, result_name, folder, files, ext, file_label = '', add_name
 	print('Successfully written')
 
 def merge(config, current_path = os.getcwd()):
-	if config_key(config, 'files') == '':
-		quit('No input files specified')
+	if not config_key(config, 'use', True):
+		quit('This config file is marked unused')
 
-	if config_key(config, 'use') == False:
-		quit('Incorrect config path\nIf this behaviour is unexpected, check key "use" in config file')
+	if not config_key(config, 'files'):
+		quit('No input files specified')
 
 	input_folder = config_key(config, 'folder')
 	ext          = config_key(config, 'extension')
 
 	# add file names to output file or not
-	add_names    = config_key(config, 'add_file_names')
-	if add_names == '':
-		add_names = False
+	add_names = config_key(config, 'add_file_names', False)
 
 	# what write before file name
-	file_label = config_key(config, 'file_label')
-	if file_label == '':
-		file_label = 'File: '
+	file_label = config_key(config, 'file_label', 'File: ')
 
 	result_name = get_file_name(current_path, input_folder, config['output'], ext)
 
