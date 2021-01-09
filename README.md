@@ -18,22 +18,14 @@ Configuration file:
 
 `add_file_names` - add file name before its text, or not (optional parameter)
 
-`file_name_string` - what write before file name, default is 'File: ' (optional parameter)
+`file_label` - what write before file name, default is 'File: ' (optional parameter)
 
-Run:
-
-```bash
-python file_merger.py
-```
-
-The default config file location is the location of the script. You can specify a different file location:
+**Run**:
 
 ```bash
-python file_merger.py config.yml
+python path/to/file_merger.py -f FOLDER -c CONFIG_NAME
 ```
 
-For example, if you want to start from a different directory with your own config file, run:
+`-f` - Absolute path to folder with config, default is from where script run
 
-```bash
-python path/to/file_merger.py path/to/custom_config.yml
-```
+`-c` - Config file name, default is config.yml

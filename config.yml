@@ -1,7 +1,7 @@
 # use this config file or not (optional)
 use: false
 
-# file's extension (optional)
+#  extension for all files (optional)
 extension: md
 
 # sub-folder with files (optional)
@@ -22,4 +22,4 @@ ask_overwrite: true
 add_file_names: false
 
 # string before file name (optional)
-file_name_string: "File: "
+file_label: "File: "
