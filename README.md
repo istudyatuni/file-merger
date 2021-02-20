@@ -12,6 +12,13 @@ If you specify `extension`, you must write all files without extensions
 
 `files` - array with input file names without extension. Their content are merged in the order as in this list
 
+- in this list you can use key `text` instead of file name for inserting any text between file's content:
+
+```yaml
+files:
+  - text: 'some text'
+```
+
 `output` - resulting file name
 
 `use` - if `false`, this config file will not be used (optional parameter)
@@ -28,6 +35,6 @@ If you specify `extension`, you must write all files without extensions
 python path/to/file_merger.py -f FOLDER -c CONFIG_NAME
 ```
 
-`-f` - Absolute path to folder with config, default is from where script run
+`-f` - Absolute path to folder with project, default is from where script run
 
-`-c` - Config file name, default is config.yml
+`-c` - Config file name, default is file-merger.yml (may be smth like `folder/config.yml`)
