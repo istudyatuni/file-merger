@@ -107,7 +107,7 @@ def merge_files(path, result_name, folder, files, ext, code_in_md = False, remov
 	else:
 		print('Successfully written')
 
-def merge(config, current_path = os.getcwd()):
+def setup_merge(config, current_path = os.getcwd()):
 	if not config_key(config, 'use', True):
 		quit('This config file is marked unused')
 
@@ -137,8 +137,11 @@ if __name__ == '__main__':
 	args = get_args()
 
 	current_path = args.folder
-	config_path = current_path + '/' + args.config
+	if os.path.exists(args.config):
+		config_path = args.config
+	else:
+		config_path = current_path + '/' + args.config
 
 	config = load_config(config_path)
 
-	merge(config, current_path)
+	setup_merge(config, current_path)
