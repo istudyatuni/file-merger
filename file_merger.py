@@ -1,6 +1,10 @@
 import argparse
-import os
-import yaml
+import os, re, yaml
+
+code_extensions = [
+	'html',
+	'css',
+]
 
 def get_args():
 	parser = argparse.ArgumentParser()
@@ -17,7 +21,10 @@ def get_file_name(path, folder, file, ext):
 		folder += '/'
 	if ext:
 		ext = '.' + ext
-	return path + '/' + folder + file + ext
+		filename = file + ext
+	return os.path.join(path, folder, file)
+	# not testing, so while not removed
+	# return path + '/' + folder + file + ext
 
 def load_config(config_path):
 	try:
@@ -57,7 +64,7 @@ def config_key(config, key, default = ''):
 	else:
 		return default
 
-def merge_files(path, result_name, folder, files, ext, file_label = '', add_names = False):
+def merge_files(path, result_name, folder, files, ext, code_in_md = False, remove_folder = False, file_label = '', add_names = False):
 	result_file = open(result_name, 'a')
 	name = ''
 	was_error = False
@@ -68,13 +75,28 @@ def merge_files(path, result_name, folder, files, ext, file_label = '', add_name
 			result_file.write(file['text'] + '\n')
 			continue
 
+		# if is code, add back-tics
+		file_ext = re.search(r'\.([a-z]+)', file)
+		file_ext = file_ext.group(1) if file_ext else ''
+		if code_in_md and file_ext in code_extensions:
+
+			start_tics = '```' + file_ext + '\n'
+			end_tics = '```\n\n'
+		else:
+			start_tics = ''
+			end_tics = ''
+
+		if add_names and remove_folder:
+			file_name_label = re.search(r'/([a-z0-9\.]+)', file)
+			file_name_label = file_name_label.group(1) if file_name_label else file
+
 		if add_names:
-			name = file_label + file + '\n\n'
+			name = file_label + file_name_label + '\n\n' + start_tics
 
 		file_name = get_file_name(path, folder, file, ext)
 		try:
 			with open(file_name, 'r') as f:
-				result_file.write(name + f.read() + '\n')
+				result_file.write(name + f.read() + end_tics)
 		except Exception as e:
 			print(e, '\nFile: %s\n'%file_name)
 			was_error = True
@@ -106,7 +128,10 @@ def merge(config, current_path = os.getcwd()):
 	if not ask_overwrite(result_name, config['ask_overwrite']):
 		quit('Exiting')
 
-	merge_files(current_path, result_name, input_folder, config['files'], ext, file_label, add_names)
+	code_in_md = config_key(config, 'code_in_md', False)
+	remove_folder = config_key(config, 'remove_folder', False)
+
+	merge_files(current_path, result_name, input_folder, config['files'], ext, code_in_md, remove_folder, file_label, add_names)
 
 if __name__ == '__main__':
 	args = get_args()

@@ -29,6 +29,10 @@ files:
 
 `file_label` - what write before file name, default is 'File: ' (optional parameter)
 
+`remove_folder` - if `true`, get from 'folder/file.txt' only 'file.txt', for use in file name. Using with enabled flag `add_file_names` (optional parameter)
+
+`code_in_md` - if `true`, write code in md file between back-tics ``` with file extension for highlighting (optional parameter)
+
 **Run**:
 
 ```bash
