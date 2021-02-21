@@ -106,14 +106,14 @@ def merge_files(path, result_name, config):
 			start_tics = ''
 			end_tics = ''
 
-		if config['add_names'] and config['remove_folder']:
+		if config['add_file_names'] and config['remove_folder']:
 			file_name_label = re.search(r'/([a-z0-9\.]+)', file)
 			file_name_label = file_name_label.group(1) if file_name_label else file
 
-		if config['add_names']:
+		if config['add_file_names']:
 			name = config['file_label'] + file_name_label + '\n\n' + start_tics
 
-		file_name = get_file_name(path, config['folder'], file, config['ext'])
+		file_name = get_file_name(path, config['folder'], file, config['extension'])
 		try:
 			with open(file_name, 'r') as f:
 				result_file.write(name + f.read() + end_tics)
