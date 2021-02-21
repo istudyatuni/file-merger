@@ -23,7 +23,7 @@ files:
 
 `use` - if `false`, this config file will not be used (optional parameter)
 
-`ask_overwrite` - ask for overwrite or not
+`ask_overwrite` - ask for overwrite or not (false by default)
 
 `add_file_names` - add file name before its text, or not (optional parameter)
 

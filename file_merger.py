@@ -2,9 +2,28 @@ import argparse
 import os, re, yaml
 
 code_extensions = [
-	'html',
+	'c',
+	'cpp',
 	'css',
+	'h',
+	'html',
+	'py',
+	'yaml',
+	'yml',
 ]
+
+default_config = {
+	'extension': '',
+	'folder': '',
+	'files': [],
+	'output': '',
+	'ask_overwrite': False,
+	'add_file_names': False,
+	'use': True,
+	'file_label': 'File: ',
+	'remove_folder': False,
+	'code_in_md': False
+}
 
 def get_args():
 	parser = argparse.ArgumentParser()
@@ -21,16 +40,23 @@ def get_file_name(path, folder, file, ext):
 		folder += '/'
 	if ext:
 		ext = '.' + ext
-		filename = file + ext
+		file = file + ext
 	return os.path.join(path, folder, file)
 	# not testing, so while not removed
 	# return path + '/' + folder + file + ext
 
 def load_config(config_path):
 	try:
-		with open(config_path, mode='r') as stream: # encoding='utf-8'
+		# encoding='utf-8'
+		with open(config_path, mode='r') as stream:
 			config = yaml.safe_load(stream)
-		return config
+
+		temp_conf = default_config
+		for key in config:
+			temp_conf[key] = config[key]
+
+		return temp_conf
+
 	except Exception as e:
 		e_type = e.__class__
 		if e_type == UnicodeDecodeError:
@@ -42,7 +68,7 @@ def load_config(config_path):
 
 		quit(str(e) + '\n' + msg)
 
-def ask_overwrite(file_name, ask_for_overwrite = True):
+def ask_overwrite(file_name, ask_for_overwrite = False):
 	if os.path.exists(file_name):
 		answer = 'y'
 		if ask_for_overwrite:
@@ -58,18 +84,12 @@ def ask_overwrite(file_name, ask_for_overwrite = True):
 	# not exist, create
 	return True
 
-def config_key(config, key, default = ''):
-	if key in config:
-		return config[key]
-	else:
-		return default
-
-def merge_files(path, result_name, folder, files, ext, code_in_md = False, remove_folder = False, file_label = '', add_names = False):
+def merge_files(path, result_name, config):
 	result_file = open(result_name, 'a')
 	name = ''
 	was_error = False
 
-	for file in files:
+	for file in config['files']:
 		if 'text' in file:
 			# write some text instead of file
 			result_file.write(file['text'] + '\n')
@@ -78,7 +98,7 @@ def merge_files(path, result_name, folder, files, ext, code_in_md = False, remov
 		# if is code, add back-tics
 		file_ext = re.search(r'\.([a-z]+)', file)
 		file_ext = file_ext.group(1) if file_ext else ''
-		if code_in_md and file_ext in code_extensions:
+		if config['code_in_md'] and file_ext in code_extensions:
 
 			start_tics = '```' + file_ext + '\n'
 			end_tics = '```\n\n'
@@ -86,14 +106,14 @@ def merge_files(path, result_name, folder, files, ext, code_in_md = False, remov
 			start_tics = ''
 			end_tics = ''
 
-		if add_names and remove_folder:
+		if config['add_names'] and config['remove_folder']:
 			file_name_label = re.search(r'/([a-z0-9\.]+)', file)
 			file_name_label = file_name_label.group(1) if file_name_label else file
 
-		if add_names:
-			name = file_label + file_name_label + '\n\n' + start_tics
+		if config['add_names']:
+			name = config['file_label'] + file_name_label + '\n\n' + start_tics
 
-		file_name = get_file_name(path, folder, file, ext)
+		file_name = get_file_name(path, config['folder'], file, config['ext'])
 		try:
 			with open(file_name, 'r') as f:
 				result_file.write(name + f.read() + end_tics)
@@ -108,30 +128,18 @@ def merge_files(path, result_name, folder, files, ext, code_in_md = False, remov
 		print('Successfully written')
 
 def setup_merge(config, current_path = os.getcwd()):
-	if not config_key(config, 'use', True):
+	if not config['use']:
 		quit('This config file is marked unused')
 
-	if not config_key(config, 'files'):
+	if not config['files']:
 		quit('No input files specified')
 
-	input_folder = config_key(config, 'folder')
-	ext          = config_key(config, 'extension')
-
-	# add file names to output file or not
-	add_names = config_key(config, 'add_file_names', False)
-
-	# what write before file name
-	file_label = config_key(config, 'file_label', 'File: ')
-
-	result_name = get_file_name(current_path, input_folder, config['output'], ext)
+	result_name = get_file_name(current_path, config['folder'], config['output'], config['extension'])
 
 	if not ask_overwrite(result_name, config['ask_overwrite']):
 		quit('Exiting')
 
-	code_in_md = config_key(config, 'code_in_md', False)
-	remove_folder = config_key(config, 'remove_folder', False)
-
-	merge_files(current_path, result_name, input_folder, config['files'], ext, code_in_md, remove_folder, file_label, add_names)
+	merge_files(current_path, result_name, config)
 
 if __name__ == '__main__':
 	args = get_args()
