@@ -1,16 +1,17 @@
 import argparse
 import os, re, yaml
 
-code_extensions = [
-	'c',
-	'cpp',
-	'css',
-	'h',
-	'html',
-	'py',
-	'yaml',
-	'yml',
-]
+code_extension_highlight = {
+	'c': 'c',
+	'cpp': 'cpp',
+	'css': 'css',
+	'h': 'cpp',
+	'html': 'html',
+	'py': 'py',
+	'svg': 'xml',
+	'yaml': 'yaml',
+	'yml': 'yaml',
+}
 
 default_config = {
 	'extension': '',
@@ -24,6 +25,8 @@ default_config = {
 	'remove_folder': False,
 	'code_in_md': False
 }
+
+filename_regex = r'/([a-zA-Z0-9\.\-\_]+\.[a-zA-Z0-9\-\_]+)'
 
 def get_args():
 	parser = argparse.ArgumentParser()
@@ -72,7 +75,7 @@ def ask_overwrite(file_name, ask_for_overwrite = False):
 	if os.path.exists(file_name):
 		answer = 'y'
 		if ask_for_overwrite:
-			answer = input('File "%s" already exist. Overwrite? [y, n] ' % file_name)
+			answer = input('File "%s" already exist. Overwrite? [Y,n] ' % file_name)
 
 		if answer == 'y':
 			# clear file content
@@ -98,20 +101,24 @@ def merge_files(path, result_name, config):
 		# if is code, add back-tics
 		file_ext = re.search(r'\.([a-z]+)', file)
 		file_ext = file_ext.group(1) if file_ext else ''
-		if config['code_in_md'] and file_ext in code_extensions:
-
-			start_tics = '```' + file_ext + '\n'
+		if config['code_in_md'] and file_ext in code_extension_highlight:
+			start_tics = '```' + code_extension_highlight[file_ext] + '\n'
 			end_tics = '```\n\n'
 		else:
 			start_tics = ''
 			end_tics = ''
 
-		if config['add_file_names'] and config['remove_folder']:
-			file_name_label = re.search(r'/([a-z0-9\.]+)', file)
-			file_name_label = file_name_label.group(1) if file_name_label else file
-
 		if config['add_file_names']:
-			name = config['file_label'] + file_name_label + '\n\n' + start_tics
+			file_name_label = file
+			if config['remove_folder']:
+				file_name_label = re.search(filename_regex, file)
+				file_name_label = file_name_label.group(1) if file_name_label else file
+			file_name_label = config['file_label'] + file_name_label + '\n\n'
+		else:
+			file_name_label = ''
+
+		if config['code_in_md']:
+			name = file_name_label + start_tics
 
 		file_name = get_file_name(path, config['folder'], file, config['extension'])
 		try:
