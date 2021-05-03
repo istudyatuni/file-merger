@@ -6,7 +6,8 @@ code_extension_highlight = {
 	'cpp': 'cpp',
 	'css': 'css',
 	'h': 'cpp',
-	'html': 'html',
+	'html': 'xml',
+	'js': 'js',
 	'py': 'py',
 	'svg': 'xml',
 	'yaml': 'yaml',
@@ -123,7 +124,16 @@ def merge_files(path, result_name, config):
 		file_name = get_file_name(path, config['folder'], file, config['extension'])
 		try:
 			with open(file_name, 'r') as f:
-				result_file.write(name + f.read() + end_tics)
+				new_code = f.read()
+
+				# file is empty
+				if new_code == '':
+					break
+
+				# if file not end with linebreak
+				if new_code[-1] != '\n':
+					new_code += '\n'
+				result_file.write(name + new_code + end_tics)
 		except Exception as e:
 			print(e, '\nFile: %s\n'%file_name)
 			was_error = True
