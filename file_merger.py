@@ -77,6 +77,10 @@ def setup_merge(config, current_path = os.getcwd()):
 	if not config['use']:
 		quit('This config file is marked unused')
 
+	if config['empty']:
+		open(config['empty'], 'w').close()
+		quit('Written empty file')
+
 	if not config['files']:
 		quit('No input files specified')
 

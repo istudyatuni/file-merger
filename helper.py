@@ -2,6 +2,7 @@ import argparse
 import os, yaml
 
 default_config = {
+	'empty': False,
 	'extension': '',
 	'folder': '',
 	'files': [],
