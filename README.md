@@ -1,41 +1,41 @@
 # File merger
 
-Merge separate file to one.
+Merge multiple files into one.
 
-Configuration file:
+*Configuration file*
 
-`extension` - extension for all input and output files (optional parameter).
+| Key            | Description                                                                               | Default value |
+|:---------------|:------------------------------------------------------------------------------------------|:--------------|
+| files          | array with input files names <sup>1</sup>                                                 | -             |
+| folder         | sub-folder, where files located                                                           | -             |
+| output         | output file name                                                                          | -             |
+| extension      | extension for all input and output files <sup>2</sup>                                     | -             |
+| add_file_names | add file name before its text, or not                                                     | `false`       |
+| file_label     | what write before file name                                                               | `File: `      |
+| remove_folder  | parse from 'folder/file.txt' only 'file.txt', for use in file name <sup>3</sup>           | `false`       |
+| code_in_md     | write code in markdown file between back-tics \`\`\` with file extension for highlighting | `false`       |
+| ask_overwrite  | ask for overwrite or not                                                                  | `false`       |
+| empty          | generate empty file by path <sup>4</sup>                                                  | `false`       |
+| use            | use this config file or not                                                               | `true`        |
 
-If you specify `extension`, you must write all files without extensions.
-
-`folder` - sub-folder, where files located (optional parameter).
-
-`files` - array with input file names without extension. Their content are merged in the order as in this list.
-
-- in this list you can use key `text` instead of file name for inserting any text between file's content:
+<sup>1</sup> All the contents of the files are combined in the order of the files. In this list you can use key `text` instead of file name for inserting any text between file's content:
 
 ```yaml
 files:
   - text: 'some text'
 ```
 
-`output` - resulting file name.
+<sup>2</sup> If specified, you should write the names of all files without extensions.
 
-`use` - if `false`, this config file will not be used (optional parameter).
+<sup>3</sup> Used with the `add_file_names` flag enabled.
 
-`ask_overwrite` - ask for overwrite or not (false by default).
+<sup>4</sup> If specified, no other parameters are needed:
 
-`add_file_names` - add file name before its text, or not (optional parameter).
+```yaml
+empty: path/to/result/file
+```
 
-`file_label` - what write before file name, default is 'File: ' (optional parameter).
-
-`remove_folder` - if `true`, get from 'folder/file.txt' only 'file.txt', for use in file name. Using with enabled flag `add_file_names` (optional parameter).
-
-`code_in_md` - if `true`, write code in md file between back-tics \`\`\` with file extension for highlighting (optional parameter).
-
-`empty` - you can set only this parameter to generate empty result file: `empty: path/to/result/file`. If you specify this parameter, no other parameters are needed.
-
-**Run**:
+## Running
 
 ```bash
 python path/to/file_merger.py -f FOLDER -c CONFIG_NAME
@@ -43,4 +43,4 @@ python path/to/file_merger.py -f FOLDER -c CONFIG_NAME
 
 `-f` - Absolute path to folder with project, default is from where script run.
 
-`-c` - Config file name, default is file-merger.yml (may be smth like `folder/config.yml`).
+`-c` - Config file name, default is `file-merger.yml` (e.g. `folder/config.yml`).
