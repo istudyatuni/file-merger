@@ -15,7 +15,7 @@ code_extension_highlight = {
 	'yml': 'yaml',
 }
 
-filename_regex = r'/([a-zA-Z0-9\.\-\_]+\.[a-zA-Z0-9\-\_]+)'
+filename_regex = r'/([^\/]+\.[a-zA-Z0-9\-\_]+)'
 
 def merge_files(path, result_name, config):
 	result_file = open(result_name, 'a')

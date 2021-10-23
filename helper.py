@@ -1,7 +1,7 @@
 import argparse
 import os, yaml
 
-default_config = {
+config = {
 	'empty': False,
 	'extension': '',
 	'folder': '',
@@ -25,27 +25,17 @@ def get_args():
 	return parser.parse_args()
 
 def get_file_name(path, folder, file, ext):
-	# when folder == '' result path looks like 'path//file.ext'
-	if folder:
-		folder += '/'
 	if ext:
-		ext = '.' + ext
-		file = file + ext
+		file = f'{file}.{ext}'
 	return os.path.join(path, folder, file)
-	# not testing, so while not removed
-	# return path + '/' + folder + file + ext
 
 def load_config(config_path):
 	try:
 		# encoding='utf-8'
 		with open(config_path, mode='r') as stream:
-			config = yaml.safe_load(stream)
+			config.update(yaml.safe_load(stream))
 
-		temp_conf = default_config
-		for key in config:
-			temp_conf[key] = config[key]
-
-		return temp_conf
+		return config
 
 	except Exception as e:
 		e_type = e.__class__
