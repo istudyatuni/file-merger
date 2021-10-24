@@ -1,13 +1,13 @@
-# use this config file or not (optional)
+# use this config file or not
 use: false
 
-#  extension for all files (optional)
+# extension for all files
 extension: md
 
-# sub-folder with files (optional)
+# sub-folder with files
 folder: files
 
-# chapters sequence, order is important
+# chapters sequence
 files:
   - "1"
   - "2"
@@ -18,8 +18,8 @@ output: readme
 # ask to overwrite resulting file or not
 ask_overwrite: true
 
-# write file names before text or not (optional)
+# write file names before text or not
 add_file_names: false
 
-# string before file name (optional)
+# string before file name
 file_label: "File: "
