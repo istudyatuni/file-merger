@@ -6,6 +6,7 @@ code_extension_highlight = {
 	'c': 'c',
 	'cpp': 'cpp',
 	'css': 'css',
+	'glsl': 'glsl',
 	'h': 'cpp',
 	'html': 'xml',
 	'js': 'js',
@@ -40,9 +41,14 @@ def merge_files(path, result_name, config):
 
 		if config['add_file_names']:
 			file_name_label = file
+
 			if config['remove_folder']:
 				file_name_label = re.search(filename_regex, file)
 				file_name_label = file_name_label.group(1) if file_name_label else file
+
+			if config['file_name_as_code']:
+				file_name_label = f'`{file_name_label}`'
+
 			file_name_label = config['file_label'] + file_name_label + '\n\n'
 		else:
 			file_name_label = ''
@@ -64,7 +70,7 @@ def merge_files(path, result_name, config):
 					new_code += '\n'
 				result_file.write(name + new_code + end_tics)
 		except Exception as e:
-			print(e, '\nFile: %s\n'%file_name)
+			print(e, f'\nFile: {file_name}')
 			was_error = True
 
 	result_file.close()
@@ -74,8 +80,8 @@ def merge_files(path, result_name, config):
 		print('Successfully written')
 
 def setup_merge(config, current_path = os.getcwd()):
-	if not config['use']:
-		quit('This config file is marked unused')
+	if config['use'] is False:
+		quit('This config file marked as unused')
 
 	if config['empty']:
 		open(config['empty'], 'w').close()

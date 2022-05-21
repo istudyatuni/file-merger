@@ -12,7 +12,8 @@ config = {
 	'use': True,
 	'file_label': 'File: ',
 	'remove_folder': False,
-	'code_in_md': False
+	'code_in_md': False,
+	'file_name_as_code': False,
 }
 
 def get_args():

@@ -23,3 +23,5 @@ add_file_names: false
 
 # string before file name
 file_label: "File: "
+
+file_name_as_code: false

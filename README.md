@@ -1,6 +1,6 @@
 # File merger
 
-Merge multiple files into one.
+Merge multiple files into one. Support inserting code as markdown code blocks.
 
 *Configuration file*
 
