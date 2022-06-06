@@ -43,4 +43,4 @@ python path/to/file_merger.py -f FOLDER -c CONFIG_NAME
 
 `-f` - Absolute path to folder with project, default is from where script run.
 
-`-c` - Config file name, default is `file-merger.yml` (e.g. `folder/config.yml`).
+`-c` - Config file name, default is `file-merger.yaml` (e.g. `folder/config.yaml`).

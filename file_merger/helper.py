@@ -21,7 +21,7 @@ def get_args():
 
 	# os.getcwd() is from where script run
 	parser.add_argument('-f', '--folder', default=os.getcwd(), help='Absolute path to folder with files')
-	parser.add_argument('-c', '--config', default='file-merger.yml', help='Config file name, or with folder: folder/config.yml')
+	parser.add_argument('-c', '--config', default='file-merger.yaml', help='Config file name, or with folder: folder/config.yml')
 
 	return parser.parse_args()
 
