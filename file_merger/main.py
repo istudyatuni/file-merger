@@ -58,7 +58,7 @@ def merge_files(path, result_name, config):
 		if config['code_in_md']:
 			name = file_name_label + start_tics
 
-		file_name = get_file_name(path, config['folder'], file, config['extension'])
+		file_name = get_file_name(os.path.join(path, config['folder']), file, config['extension'])
 		try:
 			with open(file_name, 'r') as f:
 				new_code = f.read()
@@ -81,7 +81,7 @@ def merge_files(path, result_name, config):
 	else:
 		print('Successfully written')
 
-def setup_merge(config, current_path = os.getcwd()):
+def setup_merge(config, current_path, config_path):
 	if config['use'] is False:
 		quit('This config file marked as unused')
 
@@ -92,7 +92,7 @@ def setup_merge(config, current_path = os.getcwd()):
 	if not config['files']:
 		quit('No input files specified')
 
-	result_name = get_file_name(current_path, config['folder'], config['output'], config['extension'])
+	result_name = get_file_name(config_path, config['output'], config['extension'])
 
 	if not ask_overwrite(result_name, config['ask_overwrite']):
 		quit('Exiting')
@@ -110,4 +110,5 @@ def main():
 
 	config = load_config(config_path)
 
-	setup_merge(config, current_path)
+	config_folder = os.path.dirname(config_path)
+	setup_merge(config, current_path, config_folder)

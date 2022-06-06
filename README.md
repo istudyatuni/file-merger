@@ -8,11 +8,11 @@ Merge multiple files into one. Support inserting code as markdown code blocks.
 |:---------------|:------------------------------------------------------------------------------------------|:--------------|
 | files          | array with input files names <sup>1</sup>                                                 | -             |
 | folder         | sub-folder, where files located                                                           | -             |
-| output         | output file name                                                                          | -             |
+| output         | output file name with optional path, relative to config location                          | -             |
 | extension      | extension for all input and output files <sup>2</sup>                                     | -             |
 | add_file_names | add file name before its text, or not                                                     | `false`       |
 | file_label     | what write before file name                                                               | `File: `      |
-| remove_folder  | parse from 'folder/file.txt' only 'file.txt', for use in file name <sup>3</sup>           | `false`       |
+| remove_folder  | extract from 'folder/file.txt' only 'file.txt', for use in file name <sup>3</sup>         | `false`       |
 | code_in_md     | write code in markdown file between back-tics \`\`\` with file extension for highlighting | `false`       |
 | ask_overwrite  | ask for overwrite or not                                                                  | `false`       |
 | empty          | generate empty file by path <sup>4</sup>                                                  | `false`       |

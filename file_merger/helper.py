@@ -25,10 +25,10 @@ def get_args():
 
 	return parser.parse_args()
 
-def get_file_name(path, folder, file, ext):
+def get_file_name(path, file, ext):
 	if ext:
 		file = f'{file}.{ext}'
-	return os.path.join(path, folder, file)
+	return os.path.join(path, file)
 
 def load_config(config_path):
 	try:
