@@ -1,6 +1,6 @@
 import os, re
 
-from helper import get_args, get_file_name, ask_overwrite, load_config
+from file_merger.helper import get_args, get_file_name, ask_overwrite, load_config
 
 code_extension_highlight = {
 	'c': 'c',
@@ -97,7 +97,7 @@ def setup_merge(config, current_path = os.getcwd()):
 
 	merge_files(current_path, result_name, config)
 
-if __name__ == '__main__':
+def main():
 	args = get_args()
 
 	current_path = args.folder
