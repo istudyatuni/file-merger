@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "file-merger"
-version = "0.1.0"
+version = "0.1.0rc1"
 description = "Merge multiple text files into one"
 authors = ["Ilia <istudyatuni@gmail.com>"]
 
